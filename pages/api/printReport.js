@@ -41,4 +41,5 @@ export default (req, res) => {
     }).catch(function (error) {
         res.send(error)
     })
+
 }
