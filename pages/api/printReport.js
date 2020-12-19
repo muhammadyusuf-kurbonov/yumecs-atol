@@ -2,16 +2,16 @@ export default (req, res) => {
     let axios = require("axios")
     let CryptoJS = require("crypto-js")
 
-    let {id} = req.query
+    let {OrderID, amt, fio} = req.body
 
-    let signature = CryptoJS.SHA256("nXkG847p600000000001560" + id).toString(CryptoJS.enc.Base64)
+    let signature = CryptoJS.SHA256("nXkG847p600000000001560" + OrderID).toString(CryptoJS.enc.Base64)
 
     console.log(req)
 
     axios.default.post("https://mpi.mkb.ru:9443/OnlineReceipt/1/600000000001560/receipt",
         {
-            "id": id,
-            "orderId": id,
+            "id": OrderID,
+            "orderId": OrderID,
             "client": {"email": "muhammadyusuf.kurbonov2002@gmail.com"},
             "company": {
                 "email": "muhammadyusuf.kurbonov2002@gmail.com",
@@ -20,15 +20,15 @@ export default (req, res) => {
             },
             "receipt": {
                 "items": [{
-                    "name": "Товар 2",
-                    "price": 100.00,
+                    "name": OrderID + " " + fio,
+                    "price": amt,
                     "quantity": 1.0,
-                    "sum": 100.00,
+                    "sum": amt,
                     "unit": "шт",
                     "method": "full_payment",
                     "object": "commodity",
                     "vat": {"type": "vat10", "sum": 9.09}
-                }], "payments": [{"type": 1, "sum": 400.0}], "total": 400.0
+                }], "payments": [{"type": 1, "sum": amt}], "total": amt
             }
         },
         {
@@ -41,5 +41,4 @@ export default (req, res) => {
     }).catch(function (error) {
         res.send(error)
     })
-
 }
