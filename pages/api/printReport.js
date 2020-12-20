@@ -4,7 +4,7 @@ export default (req, res) => {
 
     let {OrderID, amt, fio, MerID} = req.body
 
-    let signature = CryptoJS.SHA256("CTD378Du" + MerID + OrderID).toString(CryptoJS.enc.Base64)
+    let signature = CryptoJS.SHA256("xRXd7yxG" + MerID + OrderID).toString(CryptoJS.enc.Base64)
 
     axios.default.post("https://mpi.mkb.ru:8443/OnlineReceipt/1/" + MerID + "/receipt",
         {
