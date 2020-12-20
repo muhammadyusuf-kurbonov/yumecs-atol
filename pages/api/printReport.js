@@ -43,6 +43,6 @@ export default (req, res) => {
     }).catch(function (error) {
         res.statusCode = 500
         res.send(error)
-        console.log(error)
+        console.error(error.stack)
     })
 }
