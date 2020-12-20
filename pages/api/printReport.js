@@ -6,9 +6,8 @@ export default (req, res) => {
 
     let signature = CryptoJS.SHA256("CTD378Du" + MerID + OrderID).toString(CryptoJS.enc.Base64)
 
-    console.log(req.body)
+    console.log(JSON. stringify(req))
 
-    try {
         axios.default.post("https://mpi.mkb.ru:8443/OnlineReceipt/1/" + MerID + "/receipt",
             {
                 "id": OrderID,
@@ -40,11 +39,10 @@ export default (req, res) => {
                     "Signature": signature
                 }
             }).then(function (response) {
-                console.log(response)
+                console.log(JSON. stringify(response))
+        }).catch(function (error) {
+            console.log(JSON. stringify(error))
         })
-        res.statusCode = 200
-    } catch (e) {
-        res.statusCode = 500
-        console.error(e)
-    }
+    res.statusCode = 200
+    JSON. stringify(res)
 }
