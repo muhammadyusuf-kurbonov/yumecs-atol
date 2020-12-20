@@ -46,7 +46,7 @@ export default (req, res) => {
         res.send(response.data)
     }).catch(function (error) {
         console.error(JSON.stringify(error.stack))
-        res.statusCode = 500
+        res.statusCode = 200
         res.send(error)
     })
 }
