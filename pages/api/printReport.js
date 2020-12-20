@@ -6,7 +6,7 @@ export default async (req, res) => {
 
     let signature = CryptoJS.SHA256("CTD378Du" + MerID + OrderID).toString(CryptoJS.enc.Base64)
 
-    console.log("Request is " + req.toJSON())
+    console.log("Request is " + req.toString())
 
     try {
         let response = await axios.default.post("https://mpi.mkb.ru:8443/OnlineReceipt/1/" + MerID + "/receipt",
@@ -42,7 +42,7 @@ export default async (req, res) => {
             })
         res.statusCode =
             response.status
-        console.log("Response is " + response.toJSON())
+        console.log("Response is " + response.toString())
     } catch (e) {
         res.statusCode = 500
         console.error(e)
