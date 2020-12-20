@@ -39,12 +39,13 @@ export default (req, res) => {
                 "Signature": signature
             }
         }).then(function (response) {
-        console.log(response)
+        console.log(response.statusCode)
+        console.log(response.data)
         res.statusCode = 200
         res.send(response.data)
     }).catch(function (error) {
+        console.error(JSON.stringify(error.stack))
         res.statusCode = 500
         res.send(error)
-        console.error(JSON.stringify(error.stack))
     })
 }
