@@ -1,4 +1,4 @@
-export default (req, res) => {
+export default async (req, res) => {
     let axios = require("axios")
     let CryptoJS = require("crypto-js")
 
@@ -6,43 +6,45 @@ export default (req, res) => {
 
     let signature = CryptoJS.SHA256("CTD378Du" + MerID + OrderID).toString(CryptoJS.enc.Base64)
 
-    console.log(req)
+    console.log("Request is " + req)
 
-    axios.default.post("https://mpi.mkb.ru:8443/OnlineReceipt/1/" + MerID + "/receipt",
-        {
-            "id": OrderID,
-            "orderId": OrderID,
-            "client": {"email": "yumecs.pay@gmail.com"},
-            "company": {
-                "email": "yumecs.pay@gmail.com",
-                "inn": "7726433751",
-                "paymentAddress": "https://yumecs.uz"
+    try {
+        let response = await axios.default.post("https://mpi.mkb.ru:8443/OnlineReceipt/1/" + MerID + "/receipt",
+            {
+                "id": OrderID,
+                "orderId": OrderID,
+                "client": {"email": "yumecs.pay@gmail.com"},
+                "company": {
+                    "email": "yumecs.pay@gmail.com",
+                    "inn": "7726433751",
+                    "paymentAddress": "https://yumecs.uz"
+                },
+                "receipt": {
+                    "items": [{
+                        "name": OrderID + " " + fio,
+                        "price": amt,
+                        "quantity": 1.0,
+                        "sum": amt,
+                        "unit": "шт",
+                        "method": "full_payment",
+                        "object": "commodity",
+                        "vat": {"type": "none", "sum": 0}
+                    }],
+                    "payments": [{"type": 1, "sum": amt}],
+                    "total": amt
+                }
             },
-            "receipt": {
-                "items": [{
-                    "name": OrderID + " " + fio,
-                    "price": amt,
-                    "quantity": 1.0,
-                    "sum": amt,
-                    "unit": "шт",
-                    "method": "full_payment",
-                    "object": "commodity",
-                    "vat": {"type": "none", "sum": 0}
-                }],
-                "payments": [{"type": 1, "sum": amt}],
-                "total": amt
-            }
-        },
-        {
-            headers: {
-                "Content-Type": "application/json",
-                "Signature": signature
-            }
-        }).then(function (response) {
-        res.statusCode = 200
-        res.send(response.data)
-    }).catch(function (error) {
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Signature": signature
+                }
+            })
+        res.statusCode =
+            response.status
+        console.log("Response is " + response)
+    } catch (e) {
         res.statusCode = 500
-        res.send(error)
-    })
+        console.error(e)
+    }
 }
