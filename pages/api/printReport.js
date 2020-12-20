@@ -40,8 +40,7 @@ export default async (req, res) => {
                     "Signature": signature
                 }
             })
-        res.statusCode =
-            response.status
+        res.statusCode = 200
         console.log(response)
     } catch (e) {
         res.statusCode = 500
