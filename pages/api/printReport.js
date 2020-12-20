@@ -2,21 +2,21 @@ export default (req, res) => {
     let axios = require("axios")
     let CryptoJS = require("crypto-js")
 
-    let {OrderID, amt, fio} = req.body
+    let {OrderID, amt, fio, MerID} = req.body
 
-    let signature = CryptoJS.SHA256("nXkG847p600000000001560" + OrderID).toString(CryptoJS.enc.Base64)
+    let signature = CryptoJS.SHA256("CTD378Du" + MerID + OrderID).toString(CryptoJS.enc.Base64)
 
     console.log(req)
 
-    axios.default.post("https://mpi.mkb.ru:9443/OnlineReceipt/1/600000000001560/receipt",
+    axios.default.post("https://mpi.mkb.ru:8443/OnlineReceipt/1/" + MerID + "/receipt",
         {
             "id": OrderID,
             "orderId": OrderID,
-            "client": {"email": "muhammadyusuf.kurbonov2002@gmail.com"},
+            "client": {"email": "yumecs.pay@gmail.com"},
             "company": {
-                "email": "muhammadyusuf.kurbonov2002@gmail.com",
-                "inn": "5544332219",
-                "paymentAddress": "https://v4.online.atol.ru"
+                "email": "yumecs.pay@gmail.com",
+                "inn": "7726433751",
+                "paymentAddress": "https://yumecs.uz"
             },
             "receipt": {
                 "items": [{
@@ -27,8 +27,10 @@ export default (req, res) => {
                     "unit": "шт",
                     "method": "full_payment",
                     "object": "commodity",
-                    "vat": {"type": "vat10", "sum": 9.09}
-                }], "payments": [{"type": 1, "sum": amt}], "total": amt
+                    "vat": {"type": "none", "sum": 0}
+                }],
+                "payments": [{"type": 1, "sum": amt}],
+                "total": amt
             }
         },
         {
@@ -37,8 +39,10 @@ export default (req, res) => {
                 "Signature": signature
             }
         }).then(function (response) {
+        res.statusCode = 200
         res.send(response.data)
     }).catch(function (error) {
+        res.statusCode = 500
         res.send(error)
     })
 }
