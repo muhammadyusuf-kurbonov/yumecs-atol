@@ -2,7 +2,9 @@ export default (req, res) => {
     let axios = require("axios")
     let CryptoJS = require("crypto-js")
 
-    let {OrderID, amt, fio, MerID} = req.body
+    let {OrderID, amt, fio} = req.body
+
+    let MerID = "";
 
     console.log(req)
 
@@ -45,6 +47,6 @@ export default (req, res) => {
     }).catch(function (error) {
         res.statusCode = 500
         res.send(error)
-        console.error(error.stack)
+        console.error(JSON.stringify(error.stack))
     })
 }
