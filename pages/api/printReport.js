@@ -8,6 +8,8 @@ export default (req, res) => {
 
     let signature = CryptoJS.SHA256("xRXd7yxG" + MerID + OrderID).toString(CryptoJS.enc.Base64)
 
+    var amount = (parseFloat(amt) / 100.0).toFixed(2)
+
     axios.default.post("https://mpi.mkb.ru:8443/OnlineReceipt/1/" + MerID + "/receipt",
         {
             "id": OrderID,
@@ -21,16 +23,16 @@ export default (req, res) => {
             "receipt": {
                 "items": [{
                     "name": OrderID + " " + fio,
-                    "price": amt,
+                    "price": amount,
                     "quantity": 1.0,
-                    "sum": amt,
+                    "sum": amount,
                     "unit": "шт",
                     "method": "full_payment",
                     "object": "commodity",
                     "vat": {"type": "none", "sum": 0}
                 }],
-                "payments": [{"type": 1, "sum": amt}],
-                "total": amt
+                "payments": [{"type": 1, "sum": amount}],
+                "total": amount
             }
         },
         {
@@ -39,7 +41,6 @@ export default (req, res) => {
                 "Signature": signature
             }
         }).then(function (response) {
-        console.log(response.statusCode)
         console.log(response.data)
         res.statusCode = 200
         res.send(response.data)
