@@ -2,9 +2,7 @@ export default (req, res) => {
     let axios = require("axios")
     let CryptoJS = require("crypto-js")
 
-    let {OrderID, amt, fio} = req.body
-
-    let MerID = "";
+    let {OrderID, amt, fio, MerID} = req.body
 
     console.log(req)
 
