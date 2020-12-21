@@ -6,7 +6,7 @@ export default (req, res) => {
 
     console.log(req)
 
-    let signature = CryptoJS.SHA256("xRXd7yxG" + MerID + OrderID).toString(CryptoJS.enc.Base64)
+    let signature = CryptoJS.SHA256("CTD378Du" + MerID + OrderID).toString(CryptoJS.enc.Base64)
 
     var amount = (parseFloat(amt) / 100.0).toFixed(2)
 
