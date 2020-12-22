@@ -14,6 +14,7 @@ export default (req, res) => {
         {
             "id": OrderID,
             "orderId": OrderID,
+            "receipt_id": OrderID,
             "client": {"email": "yumecs.pay@gmail.com"},
             "company": {
                 "email": "yumecs.pay@gmail.com",
