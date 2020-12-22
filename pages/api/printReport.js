@@ -72,5 +72,10 @@ export default (req, res) => {
             console.log('Error', error.message);
         }
         console.log(error.config);
+        res.statusCode = 200
+        res.send({
+            status: "error",
+            error: error
+        })
     });
 }
