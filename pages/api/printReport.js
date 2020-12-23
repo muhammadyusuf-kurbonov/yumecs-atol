@@ -60,7 +60,7 @@ export default async (req, res) => {
     console.log("Response: \n")
     console.log(JSON.stringify(receiptResponse.data))
 
-    if (receiptResponse.data["success"]){
+    if (receiptResponse.data["result"]["success"]){
 
         let amount_str = amount + "00"
 
