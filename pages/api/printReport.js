@@ -80,5 +80,11 @@ export default (req, res) => {
                 error: error
             })
         });
+    }else{
+        res.statusCode = 200;
+        res.send({
+            message: "Unsuccessful payment",
+            "request": req.body
+        })
     }
 }
