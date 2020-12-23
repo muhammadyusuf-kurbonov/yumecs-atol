@@ -71,7 +71,7 @@ export default async (req, res) => {
         let payment_info = {
             "mid": mid,
             "aid": aid,
-            "amount": amount_value,
+            "amount": amount_str,
             "oid": oid,
             "signature": CryptoJS.SHA256("CTD378Du"+mid+aid+oid+amount_str+"643").toString(CryptoJS.enc.Base64),
             "redirect_url": redirect_url,
