@@ -9,7 +9,7 @@ export default (req, res) => {
 
         let signature = CryptoJS.SHA256("CTD378Du" + MerID + OrderID).toString(CryptoJS.enc.Base64)
 
-        var amount = (parseFloat(amt) / 100.0).toFixed(2)
+        let amount = parseFloat((parseFloat(amt) / 100.0).toFixed(2));
 
         let data = {
             "id": OrderID,
