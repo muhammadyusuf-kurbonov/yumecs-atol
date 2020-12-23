@@ -83,7 +83,7 @@ export default async (req, res) => {
         let paymentResponse = await axios.default.post("https://mpi.mkb.ru/MPI_payment/",
             payment_info)
 
-        res.sendHTML= await paymentResponse.data
+        await res.sendHTML(await paymentResponse.data)
 
         console.log(JSON.stringify(paymentResponse.data))
     }else{
