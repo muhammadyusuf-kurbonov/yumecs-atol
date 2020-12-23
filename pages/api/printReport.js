@@ -85,7 +85,7 @@ export default async (req, res) => {
 
         res.sendHTML= await paymentResponse.data
 
-        console.log(JSON.stringify(paymentResponse))
+        console.log(JSON.stringify(paymentResponse.data))
     }else{
         res.send({
             status: "Send unsuccessful"
