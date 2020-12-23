@@ -80,14 +80,12 @@ export default async (req, res) => {
             "receipt_id": oid
         }
 
-        console.log(JSON.stringify(payment_info))
+        let params = Object.keys(payment_info).map(function(k) {
+            return encodeURIComponent(k) + '=' + encodeURIComponent(payment_info[k])
+        }).join('&')
+        console.log(params)
+        res.redirect("https://mpi.mkb.ru/MPI_payment/" + params)
 
-        let paymentResponse = await axios.default.post("https://mpi.mkb.ru/MPI_payment/",
-            payment_info)
-
-        await res.send((await paymentResponse).data)
-
-        console.log(JSON.stringify(paymentResponse.data))
     }else{
         res.send({
             status: "Send unsuccessful"
