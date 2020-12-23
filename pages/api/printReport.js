@@ -84,7 +84,7 @@ export default async (req, res) => {
             return encodeURIComponent(k) + '=' + encodeURIComponent(payment_info[k])
         }).join('&')
         console.log(params)
-        res.redirect("https://mpi.mkb.ru/MPI_payment/" + params)
+        res.redirect("https://mpi.mkb.ru/MPI_payment/?" + params)
 
     }else{
         res.send({
