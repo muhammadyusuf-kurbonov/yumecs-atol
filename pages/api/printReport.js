@@ -80,6 +80,8 @@ export default async (req, res) => {
             "receipt_id": oid
         }
 
+        console.log(JSON.stringify(payment_info))
+
         let paymentResponse = await axios.default.post("https://mpi.mkb.ru/MPI_payment/",
             payment_info)
 
