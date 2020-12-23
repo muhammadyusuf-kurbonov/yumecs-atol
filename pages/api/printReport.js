@@ -26,7 +26,7 @@ export default (req, res) => {
                 "price": amount,
                 "quantity": 1.0,
                 "sum": amount,
-                "unit": "шт",
+                "unit": encodeURIComponent("шт"),
                 "method": "full_payment",
                 "object": "commodity",
                 "vat": {"type": "none", "sum": 0}
@@ -46,7 +46,8 @@ export default (req, res) => {
         {
             headers: {
                 "Content-Type": "application/json",
-                "Signature": signature
+                "Signature": signature,
+                "Accept-Charset": "utf-8"
             }
         }).then(function (response) {
             console.log("Response: \n")
