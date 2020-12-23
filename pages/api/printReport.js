@@ -8,6 +8,7 @@ export default async (req, res) => {
     const redirect_url = "www.yumecs.uz"
     const merchant_mail = "yumecspay@gmail.com"
 
+    res.statusCode = 200
 
     let {oid, amount} = req.body
 
@@ -79,14 +80,17 @@ export default async (req, res) => {
             "receipt_id": oid
         }
 
-        let paymentResponse = axios.default.post("https://mpi.mkb.ru/MPI_payment/",
+        let paymentResponse = await axios.default.post("https://mpi.mkb.ru/MPI_payment/",
             payment_info)
 
+        res.sendHTML= await paymentResponse.data
+
         console.log(JSON.stringify(paymentResponse))
+    }else{
+        res.send({
+            status: "Send unsuccessful"
+        })
     }
 
-    res.statusCode = 200
-    res.send({
-        status: "Send successful"
-    })
+
 }
