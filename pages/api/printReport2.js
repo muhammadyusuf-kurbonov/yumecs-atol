@@ -2,6 +2,29 @@ export default async (req, res) => {
     let axios = require("axios")
     let CryptoJS = require("crypto-js")
 
+    import pino from 'pino'
+    import { logflarePinoVercel } from 'pino-logflare'
+
+    const { stream, send } = logflarePinoVercel({
+        apiKey: "zatRpKa_kaf5",
+        sourceToken: "408f84d5-2ff9-4f08-9e2d-a414adfddc3c"
+    });
+
+    const logger = pino({
+        browser: {
+            transmit: {
+                level: "info",
+                send: send,
+            }
+        },
+        level: "debug",
+        base: {
+            env: process.env.ENV || "ENV not set",
+            revision: process.env.VERCEL_GITHUB_COMMIT_SHA,
+        },
+    }, stream);
+
+
     const mid = "620000000003267"
     const aid = "443222"
     const site_link = "https://yumecs.uz"
@@ -12,7 +35,9 @@ export default async (req, res) => {
 
     let {oid, amount, email, phone} = req.body
 
-    console.log(req.body)
+    logger.info("========REQUEST BODY=================")
+    logger.info(req.body)
+    logger.info("=====================================")
 
     let amount_value = parseFloat(amount)
 
@@ -47,9 +72,9 @@ export default async (req, res) => {
         }
     };
 
-    console.log("Data\n")
-    console.log(data)
-    console.log("======================================")
+    logger.info("============RECEIPT DATA=============")
+    logger.info(data)
+    logger.info("======================================")
 
 
     let receiptResponse = await axios.default.post("https://mpi.mkb.ru:8443/OnlineReceipt/1/" + mid + "/receipt",
@@ -61,8 +86,10 @@ export default async (req, res) => {
                 "Accept-Charset": "utf-8"
             }
         })
-    console.log("Response: \n")
+    logger.info("===========RECEIPT RESPONSE==========")
     console.log(JSON.stringify(receiptResponse.data))
+    logger.info("======================================")
+
 
     if (receiptResponse.data.hasOwnProperty("errors")){
         res.send("ID duplicate. Please use other ID.")
@@ -70,7 +97,7 @@ export default async (req, res) => {
     }
 
     if (!receiptResponse.data.hasOwnProperty("result")){
-        console.log("Unsuccessful receipt creating")
+        logger.info("\n\nUnsuccessful receipt creating\n\n")
         res.send("Failed to create receipt")
         return
     }
@@ -98,7 +125,11 @@ export default async (req, res) => {
         let params = Object.keys(payment_info).map(function(k) {
             return encodeURIComponent(k) + '=' + encodeURIComponent(payment_info[k])
         }).join('&')
+
+        logger.info("==========PAYMENT PARAMS==============")
         console.log(params)
+        logger.info("======================================")
+
         res.redirect("https://mpi.mkb.ru/MPI_payment/?" + params)
 
     }else{
