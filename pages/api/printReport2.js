@@ -65,7 +65,7 @@ export default async (req, res) => {
     console.log(JSON.stringify(receiptResponse.data))
 
     if (receiptResponse.data.hasOwnProperty("errors")){
-        res.send("Чек с таким ID уже существует.")
+        res.send("ID duplicate. Please use other ID.")
         return
     }
 
