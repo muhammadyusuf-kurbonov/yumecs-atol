@@ -69,7 +69,7 @@ export default async (req, res) => {
         return
     }
 
-    if (receiptResponse.data.hasOwnProperty("result")){
+    if (!receiptResponse.data.hasOwnProperty("result")){
         console.log("Unsuccessful receipt creating")
         res.send("Failed to create receipt")
         return
