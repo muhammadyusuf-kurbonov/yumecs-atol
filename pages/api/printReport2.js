@@ -64,6 +64,17 @@ export default async (req, res) => {
     console.log("Response: \n")
     console.log(JSON.stringify(receiptResponse.data))
 
+    if (receiptResponse.data.hasOwnProperty("errors")){
+        res.send("Чек с таким ID уже существует.")
+        return
+    }
+
+    if (receiptResponse.data.hasOwnProperty("result")){
+        console.log("Unsuccessful receipt creating")
+        res.send("Failed to create receipt")
+        return
+    }
+
     if (receiptResponse.data["result"]["success"]){
 
         let amount_str = amount + "00"
