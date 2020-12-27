@@ -2,28 +2,7 @@ export default async (req, res) => {
     let axios = require("axios")
     let CryptoJS = require("crypto-js")
 
-    import pino from 'pino'
-    import { logflarePinoVercel } from 'pino-logflare'
-
-    const { stream, send } = logflarePinoVercel({
-        apiKey: "zatRpKa_kaf5",
-        sourceToken: "408f84d5-2ff9-4f08-9e2d-a414adfddc3c"
-    });
-
-    const logger = pino({
-        browser: {
-            transmit: {
-                level: "info",
-                send: send,
-            }
-        },
-        level: "debug",
-        base: {
-            env: process.env.ENV || "ENV not set",
-            revision: process.env.VERCEL_GITHUB_COMMIT_SHA,
-        },
-    }, stream);
-
+    const logger = require('pino')()
 
     const mid = "620000000003267"
     const aid = "443222"
@@ -41,10 +20,12 @@ export default async (req, res) => {
 
     let amount_value = parseFloat(amount)
 
-    let signature = CryptoJS.SHA256("CTD378Du" + mid + oid).toString(CryptoJS.enc.Base64)
+    var uuid = require('uuid').v1();
+
+    let signature = CryptoJS.SHA256("CTD378Du" + mid + uuid).toString(CryptoJS.enc.Base64)
 
     let data = {
-        "id": oid,
+        "id": uuid,
         "orderId": oid,
         "client": {
             "email": email,
@@ -119,7 +100,7 @@ export default async (req, res) => {
             "redirect_url": redirect_url,
             "site_link": site_link,
             "merchant_mail": merchant_mail,
-            "receipt_id": oid
+            "receipt_id": uuid
         }
 
         let params = Object.keys(payment_info).map(function(k) {
