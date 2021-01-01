@@ -6,7 +6,7 @@ export default async (req, res) => {
 
     const mid = "620000000003267"
     const aid = "443222"
-    const site_link = "https://t.me/yumecsinfo_bot?start=ok"
+    const site_link = "https://yumecs.uz/redirect_to_bot/"
     const redirect_url = "www.yumecs.uz"
     const merchant_mail = "yumecspay@gmail.com"
 
