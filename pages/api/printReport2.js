@@ -1,8 +1,3 @@
-import axios from "axios";
-
-import CryptoJS from "crypto-js";
-
-import pino from "pino";
 import {handle} from "./handler";
 
 export default async (req, res) => {
