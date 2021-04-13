@@ -1,4 +1,4 @@
-import printReport2 from "printReport2";
+import printReport2 from "./printReport2";
 
 export default async (req, res) => {
 
