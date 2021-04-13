@@ -10,7 +10,7 @@ export default async (req, res) => {
     handle(oid, amount, email, phone, res)
 }
 
-export function handle(oid, amount, email, phone, res) {
+function handle(oid, amount, email, phone, res) {
     const logger = pino()
 
     // const mid = "620000000003267"
@@ -139,3 +139,5 @@ export function handle(oid, amount, email, phone, res) {
     }
 
 }
+
+module.exports = { handle }
