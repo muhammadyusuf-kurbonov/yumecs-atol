@@ -1,97 +1,89 @@
 import pino from "pino";
 import CryptoJS from "crypto-js";
+import axios from 'axios'
 
-function handle(oid, amount, email, phone, res) {
+import {v1} from "uuid";
+
+async function handle(oid, amount, email, phone, res, site_link = "https://yumecs.uz") {
     const logger = pino()
 
-    // const mid = "620000000003267"
+    // const old_mid = "620000000003267"
     const mid = "621000000001051"
     const aid = "443222"
-    const site_link = "https://yumecs.uz"
     const redirect_url = "www.yumecs.uz"
     const merchant_mail = "yumecspay@gmail.com"
 
     res.statusCode = 200
 
-    // logger.info("========REQUEST BODY=================")
-    // logger.info(req.body)
-    // logger.info("=====================================")
+    logger.info("========REQUEST BODY=================")
+    logger.info(oid, amount, email, phone)
+    logger.info("=====================================")
 
-    // let amount_value = parseFloat(amount)
+    let amount_value = parseFloat(amount)
 
-    // var uuid = require('uuid').v1();
-    //
-    // let signature = CryptoJS.SHA256("CTD378Du" + mid + uuid).toString(CryptoJS.enc.Base64)
-    //
-    // let data = {
-    //     "id": uuid,
-    //     "orderId": oid,
-    //     "client": {
-    //         "email": email,
-    //         "phone": phone
-    //     },
-    //     "company": {
-    //         "email": "yumecs.uz@gmail.com",
-    //         "sno":"usn_income_outcome",
-    //         "inn": "7726433751",
-    //         "paymentAddress": "https://yumecs.uz"
-    //     },
-    //     "receipt": {
-    //         "items": [{
-    //             "name": oid,
-    //             "price": amount_value,
-    //             "quantity": 1.0,
-    //             "sum": amount_value,
-    //             "unit": encodeURIComponent("шт"),
-    //             "method": "full_payment",
-    //             "object": "service",
-    //             "vat": {"type": "none", "sum": 0}
-    //         }],
-    //         "payments": [{"type": 1, "sum": amount_value}],
-    //         "total": amount_value
-    //     }
-    // };
-    //
-    // logger.info("============RECEIPT DATA=============")
-    // logger.info(data)
-    // logger.info("======================================")
+    const uuid = v1();
 
-    //
-    // let receiptResponse = await axios.default.post("https://mpi.mkb.ru:8443/OnlineReceipt/1/" + mid + "/receipt",
-    //     data,
-    //     {
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //             "Signature": signature,
-    //             "Accept-Charset": "utf-8"
-    //         }
-    //     })
+    let signature = CryptoJS.SHA256("j0ooBK5M" + mid + uuid).toString(CryptoJS.enc.Base64)
 
-    //TODO: Remove for ATOL
-    let receiptResponse = {
-        data: {
-            result: {
-                success: true
-            }
+    let data = {
+        "id": uuid,
+        "orderId": oid,
+        "client": {
+            "email": email,
+            "phone": phone
+        },
+        "company": {
+            "email": "yumecs.uz@gmail.com",
+            "sno":"usn_income_outcome",
+            "inn": "7726433751",
+            "paymentAddress": "https://yumecs.uz"
+        },
+        "receipt": {
+            "items": [{
+                "name": oid,
+                "price": amount_value,
+                "quantity": 1.0,
+                "sum": amount_value,
+                "unit": encodeURIComponent("шт"),
+                "method": "full_payment",
+                "object": "service",
+                "vat": {"type": "none", "sum": 0}
+            }],
+            "payments": [{"type": 1, "sum": amount_value}],
+            "total": amount_value
         }
+    };
+
+    logger.info("============RECEIPT DATA=============")
+    logger.info(data)
+    logger.info("======================================")
+
+
+    let receiptResponse = await axios.default.post("https://mpi.mkb.ru:8443/OnlineReceipt/1/" + mid + "/receipt",
+        data,
+        {
+            headers: {
+                "Content-Type": "application/json",
+                "Signature": signature,
+                "Accept-Charset": "utf-8"
+            }
+        })
+
+    logger.info("===========RECEIPT RESPONSE==========")
+    console.log(JSON.stringify(receiptResponse.data))
+    logger.info("======================================")
+
+
+    if (receiptResponse.data.hasOwnProperty("errors")){
+        res.send("ID duplicate. Please use other ID.")
+        return
     }
-    //========================================
 
-    // logger.info("===========RECEIPT RESPONSE==========")
-    // console.log(JSON.stringify(receiptResponse.data))
-    // logger.info("======================================")
-
-
-    // if (receiptResponse.data.hasOwnProperty("errors")){
-    //     res.send("ID duplicate. Please use other ID.")
-    //     return
-    // }
-    //
-    // if (!receiptResponse.data.hasOwnProperty("result")){
-    //     logger.info("\n\nUnsuccessful receipt creating\n\n")
-    //     res.send("Failed to create receipt")
-    //     return
-    // }
+    if (!receiptResponse.data.hasOwnProperty("result")){
+        logger.info("\n\nUnsuccessful receipt creating\n\n")
+        res.send("Failed to create receipt")
+        return
+    }
 
     if (receiptResponse.data["result"]["success"]) {
 
@@ -110,7 +102,7 @@ function handle(oid, amount, email, phone, res) {
             "redirect_url": redirect_url,
             "site_link": site_link,
             "merchant_mail": merchant_mail,
-            // "receipt_id": uuid
+            "receipt_id": uuid
         }
 
         let params = Object.keys(payment_info).map(function (k) {
