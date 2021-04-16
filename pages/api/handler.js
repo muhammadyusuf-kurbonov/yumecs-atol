@@ -35,7 +35,7 @@ async function handle(oid, amount, email, phone, res, site_link = "https://yumec
         "company": {
             "email": "yumecs.uz@gmail.com",
             "sno":"usn_income_outcome",
-            "inn": "7726433751",
+            "inn": "7726475367",
             "paymentAddress": "https://yumecs.uz"
         },
         "receipt": {
