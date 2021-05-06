@@ -10,6 +10,7 @@ async function handle(oid, amount, email, phone, res, site_link = "https://yumec
     // const old_mid = "620000000003267"
     const mid = "621000000001051"
     const aid = "443222"
+    const pwd="1dQKdrSc"
     const redirect_url = "www.yumecs.uz"
     const merchant_mail = "yumecspay@gmail.com"
 
@@ -23,7 +24,7 @@ async function handle(oid, amount, email, phone, res, site_link = "https://yumec
 
     const uuid = v1();
 
-    let signature = CryptoJS.SHA256("j0ooBK5M" + mid + uuid).toString(CryptoJS.enc.Base64)
+    let signature = CryptoJS.SHA256(pwd + mid + uuid).toString(CryptoJS.enc.Base64)
 
     let data = {
         "id": uuid,
@@ -98,7 +99,7 @@ async function handle(oid, amount, email, phone, res, site_link = "https://yumec
             "aid": aid,
             "amount": amount_str,
             "oid": oid,
-            "signature": CryptoJS.SHA256("j0ooBK5M" + mid + aid + oid + amount_str + "643").toString(CryptoJS.enc.Base64),
+            "signature": CryptoJS.SHA256(pwd + mid + aid + oid + amount_str + "643").toString(CryptoJS.enc.Base64),
             "redirect_url": redirect_url,
             "site_link": site_link,
             "merchant_mail": merchant_mail,
