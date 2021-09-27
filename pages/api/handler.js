@@ -30,8 +30,7 @@ async function handle(oid, amount, email, phone, res, site_link = "https://yumec
         "id": uuid,
         "orderId": oid,
         "client": {
-            "email": email,
-            "phone": phone
+            "email": email
         },
         "company": {
             "email": "yumecs.uz@gmail.com",
