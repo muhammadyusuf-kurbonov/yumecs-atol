@@ -72,7 +72,7 @@ async function handle(oid, amount, email, phone, res, site_link = "https://yumec
 
     if (receiptResponse.data.hasOwnProperty("errors")){
         res.send("Error occurred: " + JSON.stringify(receiptResponse.data['errors']))
-        console.log(receiptResponse.data['errors'])
+        console.log(receiptResponse.data)
         return
     }
 
