@@ -75,7 +75,7 @@ async function handle(oid, amount, email, phone, res, site_link = "https://yumec
 
 
     if (receiptResponse.data.hasOwnProperty("errors")){
-        res.send("ID duplicate. Please use other ID.")
+        res.send("Error occurred: " + receiptResponse.data['errors'])
         console.log(receiptResponse.data['errors'])
         return
     }
