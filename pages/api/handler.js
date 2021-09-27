@@ -16,10 +16,6 @@ async function handle(oid, amount, email, phone, res, site_link = "https://yumec
 
     res.statusCode = 200
 
-    logger.info("========REQUEST BODY=================")
-    logger.info(oid, amount, email, phone)
-    logger.info("=====================================")
-
     let amount_value = parseFloat(amount)
 
     const uuid = v1();
@@ -30,8 +26,7 @@ async function handle(oid, amount, email, phone, res, site_link = "https://yumec
         "id": uuid,
         "orderId": oid,
         "client": {
-            "email": email,
-            "phone": phone
+            "email": email
         },
         "company": {
             "email": "yumecs.uz@gmail.com",
