@@ -4,14 +4,14 @@ import axios from 'axios'
 
 import {v1} from "uuid";
 
-async function handle(oid, amount, email, phone, res, site_link = "https://yumecs.uz") {
+async function handle(oid, amount, email, phone, res, site_link = "https://yumecs.pro") {
     const logger = pino()
 
     // const old_mid = "620000000003267"
     const mid = "621000000001051"
     const aid = "443222"
     const pwd="1dQKdrSc"
-    const redirect_url = "www.yumecs.uz"
+    const redirect_url = "www.yumecs.pro"
     const merchant_mail = "yumecspay@gmail.com"
 
     res.statusCode = 200
@@ -33,7 +33,7 @@ async function handle(oid, amount, email, phone, res, site_link = "https://yumec
             "email": "yumecs.uz@gmail.com",
             "sno":"usn_income_outcome",
             "inn": "7726475367",
-            "paymentAddress": "https://yumecs.uz"
+            "paymentAddress": "https://yumecs.pro"
         },
         "receipt": {
             "items": [{
